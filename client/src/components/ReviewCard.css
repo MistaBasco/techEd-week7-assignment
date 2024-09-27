@@ -1,0 +1,14 @@
+.ReviewCard {
+  background-color: rgb(101, 111, 77);
+}
+
+.ReviewCard .Link {
+  text-decoration: none;
+}
+
+.ReviewCard button {
+  width: fit-content;
+  height: fit-content;
+  padding: 0.3svh 0.3svw;
+  margin: 0.3svh 0.3svw;
+}

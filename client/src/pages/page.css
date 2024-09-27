@@ -1,0 +1,9 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 75%;
+  text-shadow: 1px 1px 1px black;
+}

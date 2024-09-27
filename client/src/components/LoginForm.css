@@ -1,0 +1,12 @@
+.LoginForm {
+}
+
+.LoginForm form {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3svw;
+}
+
+.LoginForm button {
+  padding: 1svh 1.3svw;
+}

@@ -1,0 +1,14 @@
+.HomePage {
+  flex-direction: row;
+}
+
+.MainContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: slateblue;
+  padding-top: 1svh;
+  height: 100%;
+  width: 80%;
+}
