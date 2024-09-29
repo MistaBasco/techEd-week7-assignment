@@ -22,9 +22,12 @@ export default function App() {
   useEffect(() => {
     async function fetchSession() {
       try {
-        const response = await fetch("http://localhost:8080/session", {
-          credentials: "include", // Include session cookie
-        });
+        const response = await fetch(
+          "https://teched-week7-assignment.onrender.com/session",
+          {
+            credentials: "include", // Include session cookie
+          }
+        );
         const data = await response.json();
 
         if (response.ok) {
