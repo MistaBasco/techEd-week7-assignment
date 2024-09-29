@@ -7,12 +7,16 @@ export default function NavBar({ current_user }) {
       <Link className="Link" to={"/"}>
         Home
       </Link>
-      <Link className="Link" to={`/user/${current_user}`}>
-        Profile
-      </Link>
-      <Link className="Link" to={"/create-review"}>
-        Post Review
-      </Link>
+      {current_user && (
+        <Link className="Link" to={`/user/${current_user}`}>
+          Profile
+        </Link>
+      )}
+      {current_user && (
+        <Link className="Link" to={"/create-review"}>
+          Post Review
+        </Link>
+      )}
       {!current_user && (
         <Link className="Link" to={"/signup"}>
           SignUp
