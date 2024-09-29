@@ -36,16 +36,12 @@ export default function ReviewCard({
 
   return (
     <div className="ReviewCard">
-      <Link
-        to={`https://teched-week7-assignment.onrender.com/anime/${anime_id}`}
-      >
+      <Link to={`/anime/${anime_id}`}>
         <h3>{anime_title}</h3>
       </Link>
       <div className="spacer">
         <strong>Review by:</strong>
-        <Link
-          to={`https://teched-week7-assignment.onrender.com/user/${user_id}`}
-        >
+        <Link to={`s/user/${user_id}`}>
           <p>{reviewer_name}</p>
         </Link>
       </div>
