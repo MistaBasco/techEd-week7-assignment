@@ -1,9 +1,9 @@
 .AnimeCard {
   min-width: 12svw;
-  background-color: coral;
+  background-color: rgb(79, 113, 119);
   border-radius: 8px;
   padding-bottom: 1svh;
-  scroll-snap-align: left;
+  /* scroll-snap-align: left; */
   /* TODO: fix shadow overflow BS */
   /* box-shadow: 2px 4px 3px rgb(113, 56, 35); */
   /* margin-top: -1svh; */
@@ -15,6 +15,12 @@
 .AnimeCard h1 {
   font-size: 1.3em;
   border-radius: 8px 8px 0px 0px;
+}
+.AnimeCard .Link {
+  color: beige;
+}
+.AnimeCard .Link:visited {
+  color: beige;
 }
 
 .AnimeCard .spacer {

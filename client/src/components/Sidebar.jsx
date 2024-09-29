@@ -1,11 +1,11 @@
 import ReviewList from "./ReviewList";
 import "./Sidebar.css";
 
-export default function Sidebar() {
+export default function Sidebar({ current_user }) {
   return (
     <>
       <div className="Sidebar">
-        <ReviewList />
+        <ReviewList current_user={current_user} />
       </div>
     </>
   );

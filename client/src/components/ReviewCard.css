@@ -1,5 +1,6 @@
 .ReviewCard {
-  background-color: rgb(101, 111, 77);
+  background-color: rgb(46, 55, 65);
+  padding-left: 0.3svw;
 }
 
 .ReviewCard .Link {

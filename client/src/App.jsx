@@ -11,14 +11,19 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Title from "./components/Title";
 
+// TODO: add profilepicture column in users
+// Edit profile feature, edit review feature, show more stats (number of posts, how many posts liked) a likes page with all the liked reviews for each user would be nice too
+//Not adding a route to add anime on purpose. users shouldn't be able to do that... admin only
+
 export default function App() {
+  let current_user = 1;
   return (
     <>
       <div className="App">
         <Title />
-        <Header />
+        <Header current_user={current_user} />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage current_user={current_user} />} />
           <Route path="/anime/:id" element={<AnimeDetailPage />} />
           <Route path="/create-review" element={<CreateReviewPage />} />
           <Route path="/user/:id" element={<UserDetailsPage />} />

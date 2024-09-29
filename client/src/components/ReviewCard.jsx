@@ -1,12 +1,13 @@
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import "./ReviewCard.css";
 import LikeButton from "./LikeButton";
 import DeleteButton from "./DeleteButton";
 
 export default function ReviewCard({
   review,
-  user_id,
+  // user_id,
   current_user,
   onDelete,
 }) {
@@ -19,11 +20,19 @@ export default function ReviewCard({
     created_at,
     anime_id,
     review_id,
+    user_id,
   } = review;
+
+  const [currentLikes, setCurrentLikes] = useState(likes);
 
   const formattedDate = format(new Date(created_at), "MMM dd, yyyy");
 
   const isAuthor = review.user_id === current_user; // Check if the logged-in user is the review author
+
+  // Function to handle like action
+  const handleLike = () => {
+    setCurrentLikes(currentLikes + 1); // Increment likes locally
+  };
 
   return (
     <div className="ReviewCard">
@@ -44,13 +53,17 @@ export default function ReviewCard({
       <p className="spacer">{review_text}</p>
 
       <p className="spacer">
-        <strong>Likes:</strong> {likes}
+        <strong>Likes:</strong> {currentLikes}
       </p>
 
       <p className="spacer">
         <strong>Date:</strong> {formattedDate}
       </p>
-      <LikeButton reviewId={review_id} />
+      <LikeButton
+        reviewId={review_id}
+        current_user={current_user}
+        onLike={handleLike}
+      />
       {isAuthor && (
         <DeleteButton reviewId={review.review_id} onDelete={onDelete} />
       )}

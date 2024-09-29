@@ -9,7 +9,7 @@
   flex-direction: column;
   width: 20%;
   height: 100%;
-  background-color: rgb(0, 136, 136);
+  background-color: rgb(112, 98, 64);
 }
 
 .UserContainer .spacer {
@@ -59,7 +59,7 @@
   flex-direction: column;
   width: 80%;
   height: 100%;
-  background-color: rgb(155, 116, 123);
+  background-color: rgb(83, 77, 61);
   flex-wrap: wrap;
   padding-left: 0.2svw;
 }
@@ -75,7 +75,7 @@
   gap: 1svh;
 }
 
-.ReviewCard {
+.UserDetailsPage .ReviewCard {
   background-color: rgb(169, 156, 136);
   display: flex;
   flex-direction: column;

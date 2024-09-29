@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./ReviewList.css";
 import ReviewCard from "./ReviewCard";
 
-export default function ReviewList() {
+export default function ReviewList({ current_user }) {
   const [reviews, setReviews] = useState([]);
   const reviewListRef = useRef(null);
   const scrollInterval = useRef(null);
@@ -14,7 +14,6 @@ export default function ReviewList() {
         const response = await fetch("http://localhost:8080/reviews"); // Adjust this endpoint if necessary
         const data = await response.json();
         setReviews(data);
-        // console.log(data);
       } catch (error) {
         console.error("Failed to fetch reviews", error);
       }
@@ -39,21 +38,25 @@ export default function ReviewList() {
     // Clear interval when component unmounts
     return () => {
       clearInterval(scrollInterval.current);
+      clearTimeout(scrollTimeout.current);
     };
   }, []);
 
   // Stop scrolling when user hovers over the list
   function handleMouseEnter() {
     clearInterval(scrollInterval.current);
+    clearTimeout(scrollTimeout.current);
   }
 
   // Resume scrolling when the user leaves the list
   function handleMouseLeave() {
-    scrollInterval.current = setInterval(() => {
-      if (reviewListRef.current) {
-        reviewListRef.current.scrollTop += 1;
-      }
-    }, 50);
+    scrollTimeout.current = setTimeout(() => {
+      scrollInterval.current = setInterval(() => {
+        if (reviewListRef.current) {
+          reviewListRef.current.scrollTop += 1; // Adjust scroll speed
+        }
+      }, 50); // Adjust scroll interval
+    }, 1000); // Small delay to resume scrolling after mouse leaves
   }
   // Function to remove a review from the list after deletion
   const handleDeleteReview = (reviewId) => {
@@ -77,8 +80,7 @@ export default function ReviewList() {
         <ReviewCard
           key={review.review_id}
           review={review}
-          user_id={review.user_id}
-          current_user={1}
+          current_user={current_user}
           onDelete={() => handleDeleteReview(review.review_id)}
         />
       ))}

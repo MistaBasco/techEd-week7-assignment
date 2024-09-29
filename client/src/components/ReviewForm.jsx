@@ -1,7 +1,7 @@
 import "./ReviewForm.css";
 import { useState, useEffect } from "react";
 
-export default function ReviewForm({ userId }) {
+export default function ReviewForm({ current_user }) {
   const [animeList, setAnimeList] = useState([]);
   const [selectedAnimeId, setSelectedAnimeId] = useState("");
   const [rating, setRating] = useState("");
@@ -45,7 +45,7 @@ export default function ReviewForm({ userId }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           anime_id: selectedAnimeId,
-          user_id: userId,
+          user_id: current_user,
           rating: parseInt(rating, 10),
           review_text: reviewText,
         }),

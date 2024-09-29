@@ -17,7 +17,7 @@ export default function AnimeCard({ anime }) {
 
   return (
     <div className="AnimeCard">
-      <Link to={`/anime/${anime_id}`}>
+      <Link className="Link" to={`/anime/${anime_id}`}>
         <h1 className="AnimeTitle">{title}</h1>
       </Link>
       {/* <img src={anime.cover_image} alt={anime.title} /> */}

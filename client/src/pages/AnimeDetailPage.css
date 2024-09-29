@@ -82,8 +82,8 @@
   gap: 1svh;
 }
 
-.ReviewCard {
-  background-color: rgb(169, 156, 136);
+.AnimeDetailPage .ReviewCard {
+  /* background-color: rgb(169, 156, 136); */
   display: flex;
   flex-direction: column;
 
