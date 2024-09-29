@@ -17,6 +17,7 @@ export default function UserDetailsPage() {
         if (response.ok) {
           setUser(data.user);
           setReviews(data.reviews);
+          console.log(data.user, data.reviews);
         } else {
           console.error(data.error);
         }
@@ -46,7 +47,7 @@ export default function UserDetailsPage() {
             <strong>Email:</strong> {user.email}
           </p>
           <p className="spacer">
-            <strong>Member since:</strong>{" "}
+            <strong>Member since:</strong>
             {new Date(user.created_at).toLocaleDateString()}
           </p>
         </div>
@@ -58,7 +59,11 @@ export default function UserDetailsPage() {
               <p>No reviews yet.</p>
             ) : (
               reviews.map((review) => (
-                <ReviewCard key={review.review_id} review={review} />
+                <ReviewCard
+                  key={review.review_id}
+                  review={review}
+                  user_id={user.user_id}
+                />
               ))
             )}
           </div>

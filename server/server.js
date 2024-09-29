@@ -29,14 +29,16 @@ app.get("/anime", async (req, res) => {
         anime.synopsis,
         anime.release_year,
         anime.cover_image,
-        genres.genre_id,              -- Include genre_id
+        genres.genre_id,
         genres.name AS genre_name,
-        array_agg(tags.tag_id) AS tag_ids,       -- Aggregate tag_ids
-        array_agg(tags.tag_name) AS tag_names    -- Aggregate tag_names
+        array_agg(DISTINCT tags.tag_id) AS tag_ids,
+        array_agg(DISTINCT tags.tag_name) AS tag_names,
+        COALESCE(ROUND(AVG(reviews.rating), 1), 0) AS average_rating  -- Round to 1 decimal place
       FROM anime
       JOIN genres ON anime.genre_id = genres.genre_id
       LEFT JOIN anime_tags ON anime.anime_id = anime_tags.anime_id
       LEFT JOIN tags ON anime_tags.tag_id = tags.tag_id
+      LEFT JOIN reviews ON anime.anime_id = reviews.anime_id
       GROUP BY anime.anime_id, genres.genre_id, genres.name
       ORDER BY anime.title;
     `);
@@ -54,10 +56,16 @@ app.get("/anime/:id", async (req, res) => {
     //Fetch anime details
     const animeResult = await db.query(
       `
-      SELECT anime.*, genres.name AS genre_name, genres.genre_id
+      SELECT 
+        anime.*, 
+        genres.name AS genre_name, 
+        genres.genre_id,
+        COALESCE(ROUND(AVG(reviews.rating), 1), 0) AS average_rating 
       FROM anime
       JOIN genres ON anime.genre_id = genres.genre_id
+      LEFT JOIN reviews ON reviews.anime_id = anime.anime_id
       WHERE anime.anime_id = $1
+      GROUP BY anime.anime_id, genres.name, genres.genre_id;
     `,
       [id]
     );
@@ -126,13 +134,13 @@ app.get("/user/:id", async (req, res) => {
     // Fetch reviews posted by the user
     const reviewsResult = await db.query(
       `
-      SELECT reviews.review_id, reviews.rating, reviews.review_text, reviews.created_at, 
-             anime.title AS anime_title, anime.anime_id
+      SELECT reviews.review_id, reviews.rating, reviews.review_text, reviews.created_at, reviews.likes,
+       anime.title AS anime_title, anime.anime_id, appusers.username AS reviewer_name
       FROM reviews
       JOIN anime ON reviews.anime_id = anime.anime_id
+      JOIN appusers ON reviews.user_id = appusers.user_id
       WHERE reviews.user_id = $1
-      ORDER BY reviews.created_at DESC
-    `,
+      ORDER BY reviews.created_at DESC`,
       [id]
     );
 
@@ -151,7 +159,7 @@ app.get("/reviews", async (req, res) => {
   try {
     const result = await db.query(`
       SELECT reviews.review_id, reviews.rating, reviews.review_text, reviews.likes, reviews.created_at, reviews.anime_id, reviews.user_id,
-             anime.title AS anime_name, appusers.username AS reviewer_name
+             anime.title AS anime_title, appusers.username AS reviewer_name
       FROM reviews
       LEFT JOIN anime ON reviews.anime_id = anime.anime_id
       LEFT JOIN appusers ON reviews.user_id = appusers.user_id
@@ -185,7 +193,8 @@ app.post("/reviews", async (req, res) => {
 
     // Insert the new review into the database
     const result = await db.query(
-      "INSERT INTO reviews (anime_id, user_id, rating, review_text) VALUES ($1, $2, $3, $4) RETURNING *",
+      `INSERT INTO reviews (anime_id, user_id, rating, review_text, likes)
+   VALUES ($1, $2, $3, $4, 0) RETURNING *`,
       [anime_id, user_id, rating, review_text]
     );
 

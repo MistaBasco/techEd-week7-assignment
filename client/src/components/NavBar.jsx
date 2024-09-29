@@ -10,8 +10,8 @@ export default function NavBar() {
       <Link className="Link" to={"/user"}>
         Profile
       </Link>
-      <Link className="Link" to={"/broken"}>
-        PlaceHolder
+      <Link className="Link" to={"/create-review"}>
+        Post Review
       </Link>
     </div>
   );

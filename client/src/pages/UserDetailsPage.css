@@ -7,7 +7,7 @@
 .UserContainer {
   display: flex;
   flex-direction: column;
-  width: 15%;
+  width: 20%;
   height: 100%;
   background-color: rgb(0, 136, 136);
 }
@@ -57,7 +57,7 @@
 .ReviewContainer {
   display: flex;
   flex-direction: column;
-  width: 85%;
+  width: 80%;
   height: 100%;
   background-color: rgb(155, 116, 123);
   flex-wrap: wrap;

@@ -3,3 +3,13 @@
   top: 1svh;
   left: 2svh;
 }
+
+.Title .Link {
+  text-decoration: none;
+  color: beige;
+}
+
+.Title .Link:visited,
+.Title .Link:active {
+  color: beige;
+}

@@ -12,6 +12,7 @@ export default function AnimeCard({ anime }) {
     genre_name,
     tag_ids,
     tag_names,
+    average_rating,
   } = anime;
 
   return (
@@ -26,6 +27,9 @@ export default function AnimeCard({ anime }) {
       <p className="spacer">{anime.synopsis}</p>
       <p className="spacer">
         <strong>Release Year:</strong> {anime.release_year}
+      </p>
+      <p className="spacer">
+        <strong>Avg Rating:</strong> {anime.average_rating}
       </p>
       <p className="spacer">
         <strong>Genre:</strong>

@@ -61,7 +61,7 @@
   cursor: pointer;
 }
 
-.ReviewContainer {
+.AnimeDetailPage .ReviewContainer {
   display: flex;
   flex-direction: column;
   width: 85%;

@@ -54,7 +54,10 @@ export default function AnimeDetailPage() {
             <strong>Release Year:</strong> {anime.release_year}
           </p>
           <p className="spacer">
-            <strong>Genre:</strong>{" "}
+            <strong>Avg Rating:</strong> {anime.average_rating}
+          </p>
+          <p className="spacer">
+            <strong>Genre:</strong>
             <span className="GenreLink">{anime.genre_name}</span>
           </p>
           <div className="TagWrapper">

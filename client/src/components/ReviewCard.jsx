@@ -2,16 +2,15 @@ import { Link } from "react-router-dom";
 import "./ReviewCard.css";
 import { format } from "date-fns";
 
-export default function ReviewCard({ review }) {
+export default function ReviewCard({ review, user_id }) {
   const {
-    anime_name,
+    anime_title,
     reviewer_name,
     rating,
     review_text,
     likes,
     created_at,
     anime_id,
-    user_id,
   } = review;
 
   const formattedDate = format(new Date(created_at), "MMM dd, yyyy");
@@ -19,7 +18,7 @@ export default function ReviewCard({ review }) {
   return (
     <div className="ReviewCard">
       <Link to={`/anime/${anime_id}`}>
-        <h3>{anime_name}</h3>
+        <h3>{anime_title}</h3>
       </Link>
       <div className="spacer">
         <strong>Review by:</strong>
