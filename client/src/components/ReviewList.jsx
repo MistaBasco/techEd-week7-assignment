@@ -14,6 +14,7 @@ export default function ReviewList() {
         const response = await fetch("http://localhost:8080/reviews"); // Adjust this endpoint if necessary
         const data = await response.json();
         setReviews(data);
+        // console.log(data);
       } catch (error) {
         console.error("Failed to fetch reviews", error);
       }

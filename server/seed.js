@@ -11,6 +11,7 @@ const seedDatabase = async () => {
   try {
     // Drop tables in the correct order to prevent foreign key conflicts
     await db.query(`
+      DROP TABLE IF EXISTS likes;
       DROP TABLE IF EXISTS reviews;
       DROP TABLE IF EXISTS anime_tags;
       DROP TABLE IF EXISTS tags;
@@ -80,6 +81,15 @@ const seedDatabase = async () => {
       );
     `);
 
+    await db.query(`
+      CREATE TABLE likes (
+        like_id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES appusers(user_id),
+        review_id INTEGER REFERENCES reviews(review_id),
+        UNIQUE (user_id, review_id)  -- Ensure that each user can only like a review once
+      );
+    `);
+
     // Insert seed data into Genres table
     await db.query(`
       INSERT INTO genres (name) VALUES
@@ -146,23 +156,40 @@ const seedDatabase = async () => {
 
     // Insert seed data into Reviews table (50 reviews, mixing short and long)
     await db.query(`INSERT INTO reviews (anime_id, user_id, rating, review_text, likes) VALUES
-    (1, 1, 9, 'Amazing plot and action scenes! It keeps you on the edge of your seat.', 10),
-    (1, 2, 8, 'Great anime, though it can be a bit too intense at times.', 5),
-    (2, 3, 10, 'A masterpiece. One of the best anime movies ever made.', 8),
-    (3, 4, 7, 'I enjoyed the growth of the characters but felt the story dragged in places.', 2),
-    (4, 5, 9, 'One Piece has an epic scale and unforgettable characters.', 12),
-    (5, 6, 10, 'Visually stunning and deeply emotional.', 7),
-    (6, 7, 9, 'A philosophical journey wrapped in an action-packed narrative.', 9),
-    (7, 8, 8, 'A bit too predictable, but overall a fun series to watch.', 6),
-    (8, 9, 10, 'A thrilling psychological battle between good and evil.', 11),
-    (9, 10, 8, 'Classic anime with timeless battles and characters.', 10),
+    (1, 1, 9, 'Amazing plot and action scenes! It keeps you on the edge of your seat.', 0),
+    (1, 2, 8, 'Great anime, though it can be a bit too intense at times.', 0),
+    (2, 3, 10, 'A masterpiece. One of the best anime movies ever made.', 0),
+    (3, 4, 7, 'I enjoyed the growth of the characters but felt the story dragged in places.', 0),
+    (4, 5, 9, 'One Piece has an epic scale and unforgettable characters.', 0),
+    (5, 6, 10, 'Visually stunning and deeply emotional.', 0),
+    (6, 7, 9, 'A philosophical journey wrapped in an action-packed narrative.', 0),
+    (7, 8, 8, 'A bit too predictable, but overall a fun series to watch.', 0),
+    (8, 9, 10, 'A thrilling psychological battle between good and evil.', 0),
+    (9, 10, 8, 'Classic anime with timeless battles and characters.', 0),
     -- Long reviews with escaped characters
-    (10, 1, 9, 'Akira is a tour de force. The animation is phenomenal, especially for its time. The dystopian future it paints is haunting and thought-provoking. The storyline, while complex, is gripping from start to finish. Tetsuo''s character arc is deeply disturbing yet fascinating, and the climax leaves you questioning the very nature of power and control.', 15),
-    (11, 2, 10, 'Neon Genesis Evangelion changed my perception of anime. It''s not just an action-packed mecha show; it delves into the psychological aspects of its characters, exploring depression, anxiety, and existentialism. The series finale was unexpected and left me pondering for days.', 12),
-    (12, 3, 9, 'Fruits Basket is a beautiful blend of heartwarming moments and emotional depth. Every character has a backstory that tugs at your heartstrings, and the supernatural elements enhance the story without overpowering the human drama.', 7),
-    (13, 4, 10, 'Demon Slayer is visually breathtaking. The animation during the fight scenes is some of the best I''ve seen, and the character development is top-notch. Tanjiro''s journey is one of perseverance, and you root for him every step of the way.', 20),
-    (14, 5, 7, 'Steins;Gate takes its time to build, but once it gets going, it''s an emotional rollercoaster. The concept of time travel is handled intelligently, and the stakes are raised in every episode.', 9);
+    (10, 1, 9, 'Akira is a tour de force. The animation is phenomenal, especially for its time. The dystopian future it paints is haunting and thought-provoking. The storyline, while complex, is gripping from start to finish. Tetsuo''s character arc is deeply disturbing yet fascinating, and the climax leaves you questioning the very nature of power and control.', 0),
+    (11, 2, 10, 'Neon Genesis Evangelion changed my perception of anime. It''s not just an action-packed mecha show; it delves into the psychological aspects of its characters, exploring depression, anxiety, and existentialism. The series finale was unexpected and left me pondering for days.', 0),
+    (12, 3, 9, 'Fruits Basket is a beautiful blend of heartwarming moments and emotional depth. Every character has a backstory that tugs at your heartstrings, and the supernatural elements enhance the story without overpowering the human drama.', 0),
+    (13, 4, 10, 'Demon Slayer is visually breathtaking. The animation during the fight scenes is some of the best I''ve seen, and the character development is top-notch. Tanjiro''s journey is one of perseverance, and you root for him every step of the way.', 0),
+    (14, 5, 7, 'Steins;Gate takes its time to build, but once it gets going, it''s an emotional rollercoaster. The concept of time travel is handled intelligently, and the stakes are raised in every episode.', 0);
   `);
+
+    // Insert seed data into Likes table (example likes data)
+    await db.query(`
+      INSERT INTO likes (user_id, review_id) VALUES
+      (1, 1),  -- User 1 liked Review 1
+      (2, 2),  -- User 2 liked Review 2
+      (3, 3),  -- User 3 liked Review 3
+      (4, 4),  -- User 4 liked Review 4
+      (5, 5),  -- User 5 liked Review 5
+      (1, 6);  -- User 1 liked Review 6
+    `);
+
+    // Update the likes count in the reviews table based on the number of likes in the likes table
+    await db.query(`
+          UPDATE reviews 
+          SET likes = (SELECT COUNT(*) FROM likes WHERE review_id = reviews.review_id);
+        `);
 
     // Create Indexes for performance optimization
     await db.query(`

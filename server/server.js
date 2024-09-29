@@ -222,41 +222,91 @@ app.get("/reviews/:animeId", async (req, res) => {
 
 // DELETE reviews/reviewId
 app.delete("/reviews/:reviewId", async (req, res) => {
-  try {
-    visitEndpoint("reviews");
-    const { reviewId } = req.params;
+  visitEndpoint("reviews/reviewId");
+  const { reviewId } = req.params;
+  const userId = 1; // Hardcoded user_id for now
 
+  try {
+    // Check if the review belongs to the user
     const result = await db.query(
-      "DELETE FROM reviews WHERE review_id = $1 RETURNING *",
-      [reviewId]
+      `SELECT * FROM reviews WHERE review_id = $1 AND user_id = $2`,
+      [reviewId, userId]
     );
 
-    // If no rows were affected, return a 404 (Not Found) response
-    if (result.rowCount === 0) {
-      return res.status(404).json({ error: "Review not found" });
+    if (result.rows.length === 0) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to delete this review" });
     }
 
-    // If successful, return the deleted review in the response
-    res
-      .status(200)
-      .json({ message: "Review deleted", deletedReview: result.rows[0] });
+    // Delete the review
+    await db.query(`DELETE FROM reviews WHERE review_id = $1`, [reviewId]);
+
+    res.status(200).json({ success: "Review deleted successfully" });
   } catch (error) {
+    console.error("Error deleting review:", error);
     res.status(500).json({ error: "Failed to delete review" });
   }
 });
 
-// PUT /reviews/:id/like
-app.put("reviews/:id/like", async (req, res) => {
+app.post("/reviews/:reviewId/like", async (req, res) => {
+  const { reviewId } = req.params;
+  // const { userId } = req.body;
+  const userId = 1; //Temporary user assignment to bypass non-existing auth
+  visitEndpoint("reviews/reviewId/like");
+
   try {
-    visitEndpoint("reviews/:id/like");
-    const { id } = req.params;
-    const result = await db.query(
-      "UPDATE reviews SET likes = likes + 1 WHERE review_id = $1 RETURNING *",
-      [id]
+    // Check if the user has already liked this review
+    const checkLike = await db.query(
+      `SELECT * FROM likes WHERE user_id = $1 AND review_id = $2`,
+      [userId, reviewId]
     );
-    res.json(result.rows[0]);
+
+    if (checkLike.rows.length > 0) {
+      return res
+        .status(400)
+        .json({ error: "You have already liked this review" });
+    }
+
+    // Insert into the likes table
+    await db.query(`INSERT INTO likes (user_id, review_id) VALUES ($1, $2)`, [
+      userId,
+      reviewId,
+    ]);
+
+    // Update the likes count in the reviews table based on the number of likes in the likes table
+    await db.query(
+      `UPDATE reviews 
+       SET likes = (SELECT COUNT(*) FROM likes WHERE review_id = $1)
+       WHERE review_id = $1`,
+      [reviewId]
+    );
+
+    res.status(200).json({ success: "Review liked successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to update review likes" });
+    console.error("Error liking review:", error);
+    res.status(500).json({ error: "Failed to like review" });
+  }
+});
+
+app.get("/reviews/:reviewId/liked", async (req, res) => {
+  const { reviewId } = req.params;
+  const userId = 1; // Hardcoded user_id (for now, until auth is implemented)
+
+  try {
+    const result = await db.query(
+      `SELECT * FROM likes WHERE user_id = $1 AND review_id = $2`,
+      [userId, reviewId]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).json({ liked: true });
+    } else {
+      res.status(200).json({ liked: false });
+    }
+  } catch (error) {
+    console.error("Error checking like status:", error);
+    res.status(500).json({ error: "Failed to check like status" });
   }
 });
 

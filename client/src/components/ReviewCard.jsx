@@ -1,6 +1,7 @@
+import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import "./ReviewCard.css";
-import { format } from "date-fns";
+import LikeButton from "./LikeButton";
 
 export default function ReviewCard({ review, user_id }) {
   const {
@@ -11,6 +12,7 @@ export default function ReviewCard({ review, user_id }) {
     likes,
     created_at,
     anime_id,
+    review_id,
   } = review;
 
   const formattedDate = format(new Date(created_at), "MMM dd, yyyy");
@@ -40,7 +42,7 @@ export default function ReviewCard({ review, user_id }) {
       <p className="spacer">
         <strong>Date:</strong> {formattedDate}
       </p>
-      <button>Like</button>
+      <LikeButton reviewId={review_id} />
     </div>
   );
 }
