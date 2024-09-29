@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import "./pages/page.css";
@@ -7,6 +7,7 @@ import AnimeDetailPage from "./pages/AnimeDetailPage";
 import CreateReviewPage from "./pages/CreateReviewPage";
 import UserDetailsPage from "./pages/UserDetailsPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import SignUpPage from "./pages/SignUpPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Title from "./components/Title";
@@ -16,16 +17,39 @@ import Title from "./components/Title";
 //Not adding a route to add anime on purpose. users shouldn't be able to do that... admin only
 
 export default function App() {
-  let current_user = 1;
+  const [current_user, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    async function fetchSession() {
+      try {
+        const response = await fetch("http://localhost:8080/session", {
+          credentials: "include", // Include session cookie
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          setCurrentUser(data.userId); // Set the current user dynamically
+        } else {
+          setCurrentUser(null); // User not logged in
+        }
+      } catch (error) {
+        console.error("Failed to fetch session", error);
+        setCurrentUser(null); // Handle error by resetting the current user
+      }
+    }
+
+    fetchSession();
+  }, []);
   return (
     <>
       <div className="App">
         <Title />
-        <Header current_user={current_user} />
+        <Header current_user={current_user} setCurrentUser={setCurrentUser} />
         <Routes>
           <Route path="/" element={<HomePage current_user={current_user} />} />
           <Route path="/anime/:id" element={<AnimeDetailPage />} />
           <Route path="/create-review" element={<CreateReviewPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/user/:id" element={<UserDetailsPage />} />
           <Route path="/404" element={<NotFoundPage />} />
           {/* Reroute not found to /404 */}

@@ -2,9 +2,17 @@ import express from "express";
 import cors from "cors";
 import pg from "pg";
 import dotenv from "dotenv";
+import session from "express-session";
+import bcrypt from "bcrypt";
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Your frontend URL
+    credentials: true, // Allow credentials (cookies, sessions)
+  })
+);
 
 dotenv.config();
 
@@ -12,10 +20,120 @@ const db = new pg.Pool({
   connectionString: process.env.DB_URL,
 });
 
+// Session configuration
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "your-secret-key", // Use a secret from .env
+    resave: false, // Prevents resaving session if unmodified
+    saveUninitialized: false, // Don't save uninitialized sessions
+    cookie: { secure: false, httpOnly: true }, // Secure: true for HTTPS
+  })
+);
+
 // create a GET endpoint (http://localhost:8080/)
 app.get("/", function (request, response) {
   visitEndpoint("/");
   response.json("You are looking at my root route. How roude.");
+});
+
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Check if the user exists
+    const result = await db.query(
+      "SELECT * FROM appusers WHERE username = $1",
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(400).json({ error: "Invalid username or password" });
+    }
+
+    const user = result.rows[0];
+
+    // Compare password with the hashed password in the database
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    if (!validPassword) {
+      return res.status(400).json({ error: "Invalid username or password" });
+    }
+
+    // Store the user info in the session
+    req.session.userId = user.user_id;
+    req.session.username = user.username;
+
+    res.json({
+      success: "Logged in successfully",
+      user: { id: user.user_id, username: user.username },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ error: "Failed to login" });
+  }
+});
+
+app.post("/signup", async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    // Check if username or email already exists
+    const userCheck = await db.query(
+      "SELECT * FROM appusers WHERE username = $1 OR email = $2",
+      [username, email]
+    );
+
+    if (userCheck.rows.length > 0) {
+      return res
+        .status(400)
+        .json({ error: "Username or email already exists" });
+    }
+
+    // Hash the password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Insert the new user into the database
+    const result = await db.query(
+      `INSERT INTO appusers (username, email, password_hash) VALUES ($1, $2, $3) RETURNING *`,
+      [username, email, hashedPassword]
+    );
+
+    // Store the user session after signup
+    req.session.userId = result.rows[0].user_id;
+    req.session.username = result.rows[0].username;
+
+    res.status(201).json({
+      success: "User registered successfully",
+      user: {
+        id: result.rows[0].user_id,
+        username: result.rows[0].username,
+      },
+    });
+  } catch (error) {
+    console.error("Error during signup:", error);
+    res.status(500).json({ error: "Failed to register user" });
+  }
+});
+
+app.get("/session", (req, res) => {
+  if (req.session.userId) {
+    res.json({
+      userId: req.session.userId,
+      username: req.session.username,
+    });
+  } else {
+    res.status(401).json({ error: "User not logged in" });
+  }
+});
+
+app.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to log out" });
+    }
+    res.clearCookie("connect.sid"); // Clear the session cookie
+    res.status(200).json({ success: "Logged out successfully" });
+  });
 });
 
 // GET /anime endpoint

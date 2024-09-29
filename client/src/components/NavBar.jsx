@@ -13,6 +13,11 @@ export default function NavBar({ current_user }) {
       <Link className="Link" to={"/create-review"}>
         Post Review
       </Link>
+      {!current_user && (
+        <Link className="Link" to={"/signup"}>
+          SignUp
+        </Link>
+      )}
     </div>
   );
 }
