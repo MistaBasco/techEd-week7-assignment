@@ -1,5 +1,5 @@
 import ReviewList from "./ReviewList";
-import "./Sidebar.css";
+import "/src/components/Sidebar.css";
 
 export default function Sidebar({ current_user }) {
   return (

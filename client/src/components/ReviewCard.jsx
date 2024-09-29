@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import "./ReviewCard.css";
+import "/src/components/ReviewCard.css";
 import LikeButton from "./LikeButton";
 import DeleteButton from "./DeleteButton";
 

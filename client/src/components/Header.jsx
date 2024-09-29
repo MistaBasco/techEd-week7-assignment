@@ -1,6 +1,6 @@
 import LoginForm from "./LoginForm";
 import NavBar from "./NavBar";
-import "./Header.css";
+import "/src/components/Header.css";
 
 export default function Header({ current_user, setCurrentUser }) {
   async function handleLogout() {

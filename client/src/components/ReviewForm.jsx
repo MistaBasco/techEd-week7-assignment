@@ -1,4 +1,4 @@
-import "./ReviewForm.css";
+import "/src/components/ReviewForm.css";
 import { useState, useEffect } from "react";
 
 export default function ReviewForm({ current_user }) {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import "./AnimeList.css";
+import "/src/components/AnimeList.css";
 import AnimeCard from "./AnimeCard";
 
 export default function AnimeList() {

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./AnimeCard.css";
+import "/src/components/AnimeCard.css";
 
 export default function AnimeCard({ anime }) {
   const {

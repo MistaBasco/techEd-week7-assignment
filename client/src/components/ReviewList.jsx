@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import "./ReviewList.css";
+import "/src/components/ReviewList.css";
 import ReviewCard from "./ReviewCard";
 
 export default function ReviewList({ current_user }) {
