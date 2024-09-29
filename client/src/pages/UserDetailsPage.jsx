@@ -12,7 +12,9 @@ export default function UserDetailsPage() {
   useEffect(() => {
     async function fetchUserDetails() {
       try {
-        const response = await fetch(`http://localhost:8080/user/${id}`);
+        const response = await fetch(
+          `https://teched-week7-assignment.onrender.com/user/${id}`
+        );
         const data = await response.json();
         if (response.ok) {
           setUser(data.user);

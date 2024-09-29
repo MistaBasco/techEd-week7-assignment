@@ -13,7 +13,9 @@ export default function AnimeDetailPage() {
   useEffect(() => {
     async function fetchAnimeDetails() {
       try {
-        const response = await fetch(`http://localhost:8080/anime/${id}`);
+        const response = await fetch(
+          `https://teched-week7-assignment.onrender.com/anime/${id}`
+        );
         const data = await response.json();
         if (response.ok) {
           setAnime(data.anime);
