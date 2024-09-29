@@ -6,7 +6,7 @@
   /* -ms-overflow-style: none;
   scrollbar-width: none; */
   scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   -webkit-overflow-scrolling: touch;
   width: 100%;
   padding-bottom: 4svh;

@@ -226,6 +226,8 @@ app.delete("/reviews/:reviewId", async (req, res) => {
   const { reviewId } = req.params;
   const userId = 1; // Hardcoded user_id for now
 
+  console.log(`Attempting to delete review: ${reviewId} by user: ${userId}`);
+
   try {
     // Check if the review belongs to the user
     const result = await db.query(

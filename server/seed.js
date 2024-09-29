@@ -76,7 +76,7 @@ const seedDatabase = async () => {
         user_id INTEGER REFERENCES appusers(user_id),
         rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 10),
         review_text TEXT,
-        likes INTEGER DEFAULT 0, -- Added the likes column
+        likes INTEGER DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
@@ -85,8 +85,8 @@ const seedDatabase = async () => {
       CREATE TABLE likes (
         like_id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES appusers(user_id),
-        review_id INTEGER REFERENCES reviews(review_id),
-        UNIQUE (user_id, review_id)  -- Ensure that each user can only like a review once
+        review_id INTEGER REFERENCES reviews(review_id) ON DELETE CASCADE,
+        UNIQUE (user_id, review_id)
       );
     `);
 

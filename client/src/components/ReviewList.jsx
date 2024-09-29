@@ -55,6 +55,12 @@ export default function ReviewList() {
       }
     }, 50);
   }
+  // Function to remove a review from the list after deletion
+  const handleDeleteReview = (reviewId) => {
+    setReviews((prevReviews) =>
+      prevReviews.filter((review) => review.review_id !== reviewId)
+    );
+  };
 
   if (reviews.length === 0) {
     return <p>No reviews available</p>;
@@ -72,6 +78,8 @@ export default function ReviewList() {
           key={review.review_id}
           review={review}
           user_id={review.user_id}
+          current_user={1}
+          onDelete={() => handleDeleteReview(review.review_id)}
         />
       ))}
     </div>
