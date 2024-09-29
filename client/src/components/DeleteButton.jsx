@@ -6,7 +6,7 @@ export default function DeleteButton({ reviewId, onDelete }) {
   const handleDelete = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/reviews/${reviewId}`,
+        `https://teched-week7-assignment.onrender.com/reviews/${reviewId}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },

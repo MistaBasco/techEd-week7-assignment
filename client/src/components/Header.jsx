@@ -5,7 +5,7 @@ import "./Header.css";
 export default function Header({ current_user, setCurrentUser }) {
   async function handleLogout() {
     try {
-      await fetch("http://localhost:8080/logout", {
+      await fetch("https://teched-week7-assignment.onrender.com/logout", {
         method: "POST",
         credentials: "include",
       });

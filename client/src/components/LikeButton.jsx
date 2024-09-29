@@ -11,7 +11,7 @@ export default function LikeButton({ reviewId, current_user, onLike }) {
     async function fetchLikeStatus() {
       try {
         const response = await fetch(
-          `http://localhost:8080/reviews/${reviewId}/liked`
+          `https://teched-week7-assignment.onrender.com/reviews/${reviewId}/liked`
         );
         const data = await response.json();
 
@@ -34,7 +34,7 @@ export default function LikeButton({ reviewId, current_user, onLike }) {
     setLoading(true); // Disable button while waiting for response
     try {
       const response = await fetch(
-        `http://localhost:8080/reviews/${reviewId}/like`,
+        `https://teched-week7-assignment.onrender.com/reviews/${reviewId}/like`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

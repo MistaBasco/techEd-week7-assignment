@@ -12,7 +12,9 @@ export default function ReviewForm({ current_user }) {
   useEffect(() => {
     async function fetchAnime() {
       try {
-        const response = await fetch("http://localhost:8080/anime"); // Call the backend API to get anime list
+        const response = await fetch(
+          "https://teched-week7-assignment.onrender.com/anime"
+        ); // Call the backend API to get anime list
         const data = await response.json();
         if (response.ok) {
           setAnimeList(data);
@@ -40,16 +42,19 @@ export default function ReviewForm({ current_user }) {
 
     try {
       console.log(selectedAnimeId, userId, rating, reviewText);
-      const response = await fetch("http://localhost:8080/reviews", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          anime_id: selectedAnimeId,
-          user_id: current_user,
-          rating: parseInt(rating, 10),
-          review_text: reviewText,
-        }),
-      });
+      const response = await fetch(
+        "https://teched-week7-assignment.onrender.com/reviews",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            anime_id: selectedAnimeId,
+            user_id: current_user,
+            rating: parseInt(rating, 10),
+            review_text: reviewText,
+          }),
+        }
+      );
 
       if (response.ok) {
         setSuccess(true); // Review posted successfully

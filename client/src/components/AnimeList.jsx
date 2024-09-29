@@ -9,7 +9,9 @@ export default function AnimeList() {
   useEffect(() => {
     async function fetchAnime() {
       try {
-        const response = await fetch("http://localhost:8080/anime");
+        const response = await fetch(
+          "https://teched-week7-assignment.onrender.com/anime"
+        );
         const data = await response.json();
         setAnimeList(data);
       } catch (error) {

@@ -11,7 +11,9 @@ export default function ReviewList({ current_user }) {
   useEffect(() => {
     async function fetchReviews() {
       try {
-        const response = await fetch("http://localhost:8080/reviews"); // Adjust this endpoint if necessary
+        const response = await fetch(
+          "https://teched-week7-assignment.onrender.com/reviews"
+        ); // Adjust this endpoint if necessary
         const data = await response.json();
         setReviews(data);
       } catch (error) {
