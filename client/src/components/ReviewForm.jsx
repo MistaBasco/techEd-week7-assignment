@@ -41,7 +41,7 @@ export default function ReviewForm({ current_user }) {
     }
 
     try {
-      console.log(selectedAnimeId, userId, rating, reviewText);
+      console.log(selectedAnimeId, current_user, rating, reviewText);
       const response = await fetch(
         "https://teched-week7-assignment.onrender.com/reviews",
         {
