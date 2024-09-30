@@ -32,12 +32,13 @@ export default function SignupForm({ setCurrentUser }) {
         console.log("User registered:", data);
         setCurrentUser(data.user.id);
       } else {
-        setErrorMessage(data.error);
+        setErrorMessage(data.error || "Failed to sign up");
         setSuccessMessage(null);
       }
     } catch (error) {
       console.error("Error during signup:", error);
       setErrorMessage("Failed to register.");
+      setSuccessMessage(null);
     }
   }
 
