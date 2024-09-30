@@ -33,12 +33,20 @@ export default function SignupForm({ setCurrentUser }) {
         console.log("User registered:", data);
         setCurrentUser(data.user.id);
       } else {
-        setErrorMessage(data.error || "Failed to sign up");
+        if (typeof setErrorMessage === "function") {
+          setErrorMessage(data.error || "Failed to sign up");
+        } else {
+          console.error("setErrorMessage is not a function");
+        }
         setSuccessMessage(null);
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      setErrorMessage("Failed to register.");
+      if (typeof setErrorMessage === "function") {
+        setErrorMessage("Failed to register.");
+      } else {
+        console.error("setErrorMessage is not a function");
+      }
       setSuccessMessage(null);
     }
   }
