@@ -41,7 +41,7 @@ export default function ReviewCard({
       </Link>
       <div className="spacer">
         <strong>Review by:</strong>
-        <Link to={`s/user/${user_id}`}>
+        <Link to={`/user/${user_id}`}>
           <p>{reviewer_name}</p>
         </Link>
       </div>
