@@ -8,3 +8,11 @@
   height: fit-content;
   padding: 0.4svh 0.4svw;
 }
+.SignUpForm form {
+  display: flex;
+  flex-direction: column;
+  gap: 1svh;
+}
+.SignUpForm .spacer {
+  justify-content: space-between;
+}
