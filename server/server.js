@@ -320,6 +320,7 @@ app.post("/reviews", async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (error) {
     // Handle any errors
+    console.error("Error posting review:", error);
     res.status(500).json({ error: "Failed to post review" });
   }
 });
