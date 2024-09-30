@@ -1,2 +1,10 @@
 .SignUpForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3svh;
+  border-radius: 8px;
+  background-color: rgb(117, 149, 159);
+  width: fit-content;
+  height: fit-content;
+  padding: 0.4svh 0.4svw;
 }

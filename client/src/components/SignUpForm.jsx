@@ -51,33 +51,39 @@ export default function SignupForm({ setCurrentUser }) {
   return (
     <div className="SignupForm">
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formValues.username}
-          onChange={handleInputChange}
-          required
-        />
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formValues.email}
-          onChange={handleInputChange}
-          required
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formValues.password}
-          onChange={handleInputChange}
-          required
-        />
+        <div className="spacer">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={formValues.username}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="spacer">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formValues.email}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="spacer">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formValues.password}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
         <button type="submit">Sign Up</button>
 
         {errorMessage && <p>{errorMessage}</p>}
