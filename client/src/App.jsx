@@ -55,7 +55,10 @@ export default function App() {
             path="/create-review"
             element={<CreateReviewPage current_user={current_user} />}
           />
-          <Route path="/signup" element={<SignUpPage />} />
+          <Route
+            path="/signup"
+            element={<SignUpPage setCurrentUser={setCurrentUser} />}
+          />
           <Route path="/user/:id" element={<UserDetailsPage />} />
           <Route path="/404" element={<NotFoundPage />} />
           {/* Reroute not found to /404 */}
