@@ -59,12 +59,14 @@ export default function ReviewCard({
       <p className="spacer">
         <strong>Date:</strong> {formattedDate}
       </p>
-      <LikeButton
-        reviewId={review_id}
-        current_user={current_user}
-        onLike={handleLike}
-      />
-      {isAuthor && (
+      {current_user && (
+        <LikeButton
+          reviewId={review_id}
+          current_user={current_user}
+          onLike={handleLike}
+        />
+      )}
+      {isAuthor && current_user && (
         <DeleteButton reviewId={review.review_id} onDelete={onDelete} />
       )}
     </div>
