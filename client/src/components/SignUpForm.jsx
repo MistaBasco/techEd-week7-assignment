@@ -23,8 +23,9 @@ export default function SignupForm({ setCurrentUser }) {
           body: JSON.stringify(formValues),
         }
       );
-
+      console.log("Response status:", response.status);
       const data = await response.json();
+      console.log("Response data:", data);
 
       if (response.ok) {
         setSuccessMessage("Signup successful!");
