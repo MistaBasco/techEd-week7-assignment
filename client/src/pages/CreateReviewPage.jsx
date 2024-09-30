@@ -1,7 +1,7 @@
 import ReviewForm from "../components/ReviewForm";
 import "./CreateReviewPage.css";
 
-export default function CreateReviewPage(current_user) {
+export default function CreateReviewPage({ current_user }) {
   return (
     <>
       <div className="page CreateReviewPage">

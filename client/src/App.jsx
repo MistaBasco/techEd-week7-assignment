@@ -51,7 +51,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage current_user={current_user} />} />
           <Route path="/anime/:id" element={<AnimeDetailPage />} />
-          <Route path="/create-review" element={<CreateReviewPage />} />
+          <Route
+            path="/create-review"
+            element={<CreateReviewPage current_user={current_user} />}
+          />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/user/:id" element={<UserDetailsPage />} />
           <Route path="/404" element={<NotFoundPage />} />
