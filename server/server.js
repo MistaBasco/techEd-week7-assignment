@@ -98,9 +98,14 @@ app.post("/signup", async (req, res) => {
       [username, email, hashedPassword]
     );
 
+    if (!result.rows || result.rows.length === 0) {
+      throw new Error("User registration failed");
+    }
+
     // Store the user session after signup
     req.session.userId = result.rows[0].user_id;
     req.session.username = result.rows[0].username;
+    console.log("Inserted User:", result.rows[0]);
 
     res.status(201).json({
       success: "User registered successfully",
