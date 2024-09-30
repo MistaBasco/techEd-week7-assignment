@@ -13,7 +13,7 @@
   flex-direction: column;
   gap: 1svh;
 }
-.SignUpForm .spacer {
+.SignUpForm form .spacer {
   justify-content: space-between;
   /* why tf isn't this showing up? */
 }
