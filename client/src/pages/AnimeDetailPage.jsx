@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import ReviewCard from "../components/ReviewCard";
 import "./AnimeDetailPage.css";
 
-export default function AnimeDetailPage() {
+export default function AnimeDetailPage({ current_user }) {
   const { id } = useParams(); // Extract the anime id from the URL
   const [anime, setAnime] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -86,7 +86,7 @@ export default function AnimeDetailPage() {
                 <ReviewCard
                   key={review.review_id}
                   review={review}
-                  user_id={review.user_id}
+                  current_user={current_user}
                 />
               ))
             )}
