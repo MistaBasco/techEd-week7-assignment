@@ -52,7 +52,7 @@ export default function SignupForm({ setCurrentUser }) {
     <div className="SignupForm">
       <form onSubmit={handleSubmit}>
         <div className="spacer">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">Username:</label>
           <input
             type="text"
             id="username"
@@ -63,7 +63,7 @@ export default function SignupForm({ setCurrentUser }) {
           />
         </div>
         <div className="spacer">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
@@ -74,7 +74,7 @@ export default function SignupForm({ setCurrentUser }) {
           />
         </div>
         <div className="spacer">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
