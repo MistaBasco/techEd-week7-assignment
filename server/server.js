@@ -390,29 +390,38 @@ app.post("/reviews/:reviewId/like", async (req, res) => {
     );
 
     if (checkLike.rows.length > 0) {
-      return res
-        .status(400)
-        .json({ error: "You have already liked this review" });
-    }
+      await db.query(
+        `DELETE FROM likes WHERE user_id = $1 AND review_id = $2`,
+        [current_user, reviewId]
+      );
 
-    // Insert into the likes table
-    await db.query(`INSERT INTO likes (user_id, review_id) VALUES ($1, $2)`, [
-      current_user,
-      reviewId,
-    ]);
+      await db.query(
+        `UPDATE reviews 
+         SET likes = (SELECT COUNT(*) FROM likes WHERE review_id = $1)
+         WHERE review_id = $1`,
+        [reviewId]
+      );
+      return res.status(200).json({ success: "Review unliked successfully" });
+    } else {
+      // Insert into the likes table
+      await db.query(`INSERT INTO likes (user_id, review_id) VALUES ($1, $2)`, [
+        current_user,
+        reviewId,
+      ]);
 
-    // Update the likes count in the reviews table based on the number of likes in the likes table
-    await db.query(
-      `UPDATE reviews 
+      // Update the likes count in the reviews table based on the number of likes in the likes table
+      await db.query(
+        `UPDATE reviews 
        SET likes = (SELECT COUNT(*) FROM likes WHERE review_id = $1)
        WHERE review_id = $1`,
-      [reviewId]
-    );
+        [reviewId]
+      );
 
-    res.status(200).json({ success: "Review liked successfully" });
+      res.status(200).json({ success: "Review liked successfully" });
+    }
   } catch (error) {
-    console.error("Error liking review:", error);
-    res.status(500).json({ error: "Failed to like review" });
+    console.error("Error liking/unliking review:", error);
+    res.status(500).json({ error: "Failed to like/unlike review" });
   }
 });
 
@@ -437,7 +446,7 @@ app.get("/reviews/:reviewId/liked", async (req, res) => {
   }
 });
 
-//TODO: GET Endpoints for genre... post/put/delete should be admin only... surely?
+//TODO: GET Endpoints for genre... post/delete should be admin only... surely?
 
 // starting our express server on port 8080
 app.listen(8080, function () {

@@ -20,6 +20,7 @@ export default function LoginForm({ setCurrentUser }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formValues),
+          credentials: "include",
         }
       );
       const data = await response.json();

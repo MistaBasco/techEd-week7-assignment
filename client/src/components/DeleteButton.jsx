@@ -11,6 +11,7 @@ export default function DeleteButton({ reviewId, current_user, onDelete }) {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ current_user }),
+          credentials: "include",
         }
       );
 

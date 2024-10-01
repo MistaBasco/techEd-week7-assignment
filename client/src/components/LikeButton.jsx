@@ -11,7 +11,14 @@ export default function LikeButton({ reviewId, current_user, onLike }) {
     async function fetchLikeStatus() {
       try {
         const response = await fetch(
-          `https://teched-week7-assignment.onrender.com/reviews/${reviewId}/liked`
+          `https://teched-week7-assignment.onrender.com/reviews/${reviewId}/liked?current_user=${encodeURIComponent(
+            current_user
+          )}`,
+          {
+            method: "GET", // or 'POST'
+            headers: { "Content-Type": "application/json" },
+            credentials: "include", // This allows cookies/sessions to be sent along with the request
+          }
         );
         const data = await response.json();
 
@@ -38,12 +45,16 @@ export default function LikeButton({ reviewId, current_user, onLike }) {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ current_user }),
+          credentials: "include",
         }
       );
 
       if (response.ok) {
-        setLiked(true); // Mark as liked after successful request
+        const result = await response.json();
+        setLiked(!liked); // Toggle liked state
         onLike();
+        console.log(result.success);
       } else {
         const data = await response.json();
         console.error(data.error);

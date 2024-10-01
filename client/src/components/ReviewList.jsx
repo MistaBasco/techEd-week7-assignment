@@ -12,8 +12,13 @@ export default function ReviewList({ current_user }) {
     async function fetchReviews() {
       try {
         const response = await fetch(
-          "https://teched-week7-assignment.onrender.com/reviews"
-        ); // Adjust this endpoint if necessary
+          "https://teched-week7-assignment.onrender.com/reviews",
+          {
+            method: "GET", // or 'POST'
+            headers: { "Content-Type": "application/json" },
+            credentials: "include", // This allows cookies/sessions to be sent along with the request
+          }
+        );
         const data = await response.json();
         setReviews(data);
       } catch (error) {
