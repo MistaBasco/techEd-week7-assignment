@@ -67,7 +67,11 @@ export default function ReviewCard({
         />
       )}
       {isAuthor && current_user && (
-        <DeleteButton reviewId={review.review_id} onDelete={onDelete} />
+        <DeleteButton
+          reviewId={review.review_id}
+          current_user={current_user}
+          onDelete={onDelete}
+        />
       )}
     </div>
   );

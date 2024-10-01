@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function DeleteButton({ reviewId, onDelete }) {
+export default function DeleteButton({ reviewId, current_user, onDelete }) {
   const [deleted, setDeleted] = useState(false);
 
   const handleDelete = async () => {
@@ -10,6 +10,7 @@ export default function DeleteButton({ reviewId, onDelete }) {
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ current_user }),
         }
       );
 

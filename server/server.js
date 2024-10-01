@@ -348,15 +348,17 @@ app.get("/reviews/:animeId", async (req, res) => {
 app.delete("/reviews/:reviewId", async (req, res) => {
   visitEndpoint("reviews/reviewId");
   const { reviewId } = req.params;
-  const userId = 1; // Hardcoded user_id for now
+  const { current_user } = req.body;
 
-  console.log(`Attempting to delete review: ${reviewId} by user: ${userId}`);
+  console.log(
+    `Attempting to delete review: ${reviewId} by user: ${current_user}`
+  );
 
   try {
     // Check if the review belongs to the user
     const result = await db.query(
       `SELECT * FROM reviews WHERE review_id = $1 AND user_id = $2`,
-      [reviewId, userId]
+      [reviewId, current_user]
     );
 
     if (result.rows.length === 0) {
@@ -377,15 +379,14 @@ app.delete("/reviews/:reviewId", async (req, res) => {
 
 app.post("/reviews/:reviewId/like", async (req, res) => {
   const { reviewId } = req.params;
-  // const { userId } = req.body;
-  const userId = 1; //Temporary user assignment to bypass non-existing auth
+  const { current_user } = req.body;
   visitEndpoint("reviews/reviewId/like");
 
   try {
     // Check if the user has already liked this review
     const checkLike = await db.query(
       `SELECT * FROM likes WHERE user_id = $1 AND review_id = $2`,
-      [userId, reviewId]
+      [current_user, reviewId]
     );
 
     if (checkLike.rows.length > 0) {
@@ -396,7 +397,7 @@ app.post("/reviews/:reviewId/like", async (req, res) => {
 
     // Insert into the likes table
     await db.query(`INSERT INTO likes (user_id, review_id) VALUES ($1, $2)`, [
-      userId,
+      current_user,
       reviewId,
     ]);
 
@@ -417,12 +418,12 @@ app.post("/reviews/:reviewId/like", async (req, res) => {
 
 app.get("/reviews/:reviewId/liked", async (req, res) => {
   const { reviewId } = req.params;
-  const userId = 1; // Hardcoded user_id (for now, until auth is implemented)
+  const current_user = req.query.current_user;
 
   try {
     const result = await db.query(
       `SELECT * FROM likes WHERE user_id = $1 AND review_id = $2`,
-      [userId, reviewId]
+      [current_user, reviewId]
     );
 
     if (result.rows.length > 0) {
