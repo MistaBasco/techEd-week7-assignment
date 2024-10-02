@@ -67,8 +67,8 @@ export default function LikeButton({ reviewId, current_user, onLike }) {
   };
 
   return (
-    <button onClick={handleLike} disabled={liked || loading}>
-      {loading ? "Processing..." : liked ? "Liked" : "Like"}
+    <button onClick={handleLike} disabled={loading}>
+      {loading ? "Processing..." : liked ? "Unlike" : "Like"}
     </button>
   );
 }
